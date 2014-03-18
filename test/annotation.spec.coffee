@@ -36,6 +36,17 @@ describe 'annotation', ->
       fn = `function(/* one */ a, b,/*   three*/c) {}`
       expect(parse fn).to.deep.equal ['one', 'b', 'three']
 
+    it 'should ignore C++-style comments', ->
+      fn = `function(
+        //  I'm a comment!
+        // A very long one
+        /* one */ a, // d,
+        b,
+        //
+        /*   three*/
+        c) {}`
+      expect(parse fn).to.deep.equal ['one', 'b', 'three']
+
     it 'should parse empty arguments', ->
       fn = `function(){}`
       expect(parse fn).to.deep.equal []
